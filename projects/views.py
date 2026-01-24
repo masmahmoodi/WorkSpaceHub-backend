@@ -2,6 +2,8 @@ from .serializers import ProjectSerializer, TaskSerializer
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from .models import Project,Task
 from rest_framework.permissions import IsAuthenticated
+from .permissions import IsProjectOwner, IsTaskProjectOwner
+
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -30,7 +32,7 @@ class ProjectListCreateView(ListCreateAPIView):
 
 
 class ProjectRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsProjectOwner]
     serializer_class = ProjectSerializer
 
     # show data to authorized users
@@ -71,7 +73,7 @@ class TaskListCreateView(ListCreateAPIView):
     
 
 class TaskDetailView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsTaskProjectOwner]
     serializer_class = TaskSerializer
 
    
